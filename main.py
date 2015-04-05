@@ -8,6 +8,8 @@ from MyHTMLParser import MyHTMLParser
 #page - A Pokemon page from Bulbapedia in the HTML format
 #If the Pokemon has egg moves that can only be learned from a Pokemon from generation III, IV or V, return a link to its page
 def checkEggMovesFromPrevGeneration(page):
+    #'‡' means that an egg move needs to bred from  a pokemon that learned it in old generation game
+    #each pokemon page has one occurence of '‡', so a pokemon that has egg moves kind we seek will have at least two '‡' on their page
     if page.decode('utf-8').count("‡") > 1:
         return link
     return False
