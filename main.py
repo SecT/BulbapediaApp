@@ -16,7 +16,6 @@ def checkEggMovesFromPrevGeneration(page):
 
 #Returns a list of partial URLs to all Pokemon pages from Bulbapedia.
 #Sample element: "/wiki/Charmander_(Pok%C3%A9mon)"
-#To obtain a complete URL, append each element to "http://bulbapedia.bulbagarden.net"
 #The elements are ordered according to National Pokedex number
 #The list is obtained from http://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_National_Pok%C3%A9dex_number
 def getListOfPokemonPages():
@@ -29,6 +28,11 @@ def getListOfPokemonPages():
     parser = MyHTMLParser()
     parser.feed(pokeListPage)
 
+    baseBulbapediaAdress = "http://bulbapedia.bulbagarden.net"
+
+    for i, link in enumerate(parser.pokeListParser.pokemonURLs):
+        parser.pokeListParser.pokemonURLs[i] = baseBulbapediaAdress + link
+
     return  parser.pokeListParser.pokemonURLs
 
 
@@ -39,13 +43,14 @@ listOfPokemonPages = getListOfPokemonPages()
 print(listOfPokemonPages)
 
 
-baseBulbapediaAdress = "http://bulbapedia.bulbagarden.net"
+
 
 downloadedPagesLimit = len(listOfPokemonPages)
 start = 0
 
 for link in listOfPokemonPages[start:start+downloadedPagesLimit]:
-    response = urllib.request.urlopen(baseBulbapediaAdress+link)
+
+    response = urllib.request.urlopen(link)
     page = response.read()
 
     data = checkEggMovesFromPrevGeneration(page)
